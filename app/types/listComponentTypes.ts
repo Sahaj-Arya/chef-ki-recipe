@@ -31,3 +31,5 @@ export interface Recipe {
 
 // Define RecipeList as an array of Recipe objects
 export type RecipeList = Recipe[];
+
+export default {};

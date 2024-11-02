@@ -1,16 +1,30 @@
 import { Image, View, Text, ScrollView, FlatList } from "react-native";
 import { ScaledSheet } from "react-native-size-matters";
 import createHomeStyles from "../styles/homeStyle";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
 import SearchBar from "@/components/SearchBar";
 import category from "../../assets/data/category.json";
 import ListComponent from "@/components/ListComponent";
 import topRecommendation from "../../assets/data/top_recommendation.json";
 import profile from "../../assets/data/user.json";
+import axios from "axios";
 export default function HomeScreen() {
   const colorScheme = useColorScheme() as "light" | "dark";
   const styles = useMemo(() => createHomeStyles(colorScheme), [colorScheme]);
+
+  const getData = async () => {
+    await axios
+      .get("https://www.google.com/")
+      .then((e) => console.log("check network"))
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <ScrollView style={styles.main}>
