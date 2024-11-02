@@ -1,70 +1,77 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-
+import { Image, View, Text, ScrollView, FlatList } from "react-native";
+import { ScaledSheet } from "react-native-size-matters";
+import createHomeStyles from "../styles/homeStyle";
+import { useMemo } from "react";
+import { useColorScheme } from "@/hooks/useColorScheme.web";
+import SearchBar from "@/components/SearchBar";
+import category from "../../assets/data/category.json";
+import ListComponent from "@/components/ListComponent";
+import topRecommendation from "../../assets/data/top_recommendation.json";
+import profile from "../../assets/data/user.json";
 export default function HomeScreen() {
+  const colorScheme = useColorScheme() as "light" | "dark";
+  const styles = useMemo(() => createHomeStyles(colorScheme), [colorScheme]);
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <ScrollView style={styles.main}>
+      <View style={styles.head}>
+        <View style={styles.profileView}>
+          <View style={styles.welcomeContainer}>
+            <Text style={styles.salutation}>Hello, {profile?.name}</Text>
+            <Text style={styles.welcomeText}>
+              What would you like to cook today?
+            </Text>
+          </View>
+          <View style={styles.profile}>
+            <Image
+              source={{ uri: profile?.profile_image }}
+              style={styles.image}
+            />
+          </View>
+        </View>
+        <SearchBar />
+      </View>
+      {/* category */}
+      <View style={styles.categoryContainer}>
+        <Text style={styles.categoryText}>Categories</Text>
+        <Text style={styles.seeAll}>See all</Text>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.categoryList}
+      >
+        {category.map((item) => (
+          <View key={item?.id} style={styles.categoryItem}>
+            <Image
+              source={{
+                uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4RvDO1mxSg_X2Gp44Ozhv0G--eTgvBIHMNA&s",
+              }}
+              style={styles.categoryItemImage}
+            />
+            <Text style={styles.categoryItemText}>{item?.name}</Text>
+          </View>
+        ))}
+      </ScrollView>
+      <View style={styles.listItemContainer}>
+        <Text style={styles.categoryText}>Recommendation</Text>
+        <Text style={styles.seeAll}>See all</Text>
+      </View>
+      <View style={styles.listItem}>
+        <ListComponent recipes={topRecommendation} />
+      </View>
+
+      <View style={styles.listItemContainer}>
+        <Text style={styles.categoryText}>Recipes Of The Week</Text>
+        <Text style={styles.seeAll}>See all</Text>
+      </View>
+      <View style={styles.listItem}>
+        <ListComponent recipes={topRecommendation} />
+      </View>
+
+      <View style={styles.footer} />
+    </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
+const styles = ScaledSheet.create({});
