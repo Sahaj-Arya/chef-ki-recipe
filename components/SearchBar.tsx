@@ -1,63 +1,33 @@
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  useColorScheme,
-  View,
-} from "react-native";
-import React from "react";
+import React, { useMemo } from "react";
+import { Platform, TextInput, useColorScheme, View } from "react-native";
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Colors } from "@/constants/Colors";
+import { ScaledSheet } from "react-native-size-matters";
 
 const SearchBar: React.FC = () => {
-  const colorScheme: ColorSchemeType = useColorScheme() as ColorSchemeType;
+  const colorScheme = useColorScheme() as "light" | "dark";
+  const styles = useMemo(() => createInputStyles(colorScheme), [colorScheme]);
 
   return (
-    <View style={{ width: "100%", marginTop: 20 }}>
-      <View
-        style={{
-          position: "absolute",
-          zIndex: 99,
-          marginTop: 10,
-          paddingLeft: 5,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <EvilIcons name="search" size={38} color={Colors[colorScheme].icon} />
-      </View>
-      <View
-        style={{
-          position: "absolute",
-          right: 40,
-          zIndex: 99,
-          marginTop: 5,
-          width: 1,
-          height: 40,
-          backgroundColor: Colors[colorScheme].icon,
-        }}
+    <View style={styles.root}>
+      <EvilIcons
+        name="search"
+        size={28}
+        color={Colors[colorScheme].icon}
+        style={styles.searchIcon}
       />
-      <View
-        style={{
-          position: "absolute",
-          right: 10,
-          zIndex: 99,
-          marginTop: 12,
-        }}
-      >
-        <AntDesign name="filter" size={24} color={Colors[colorScheme].icon} />
-      </View>
       <TextInput
-        style={{
-          height: 50,
-          borderRadius: 100,
-          paddingLeft: 50,
-          paddingRight: 60,
-          backgroundColor: Colors[colorScheme].box,
-        }}
+        style={styles.input}
         placeholder="Search any recipe"
-        placeholderTextColor={"grey"}
+        placeholderTextColor={Colors[colorScheme].placeholder}
+      />
+      <View style={styles.divider} />
+      <AntDesign
+        name="filter"
+        size={24}
+        color={Colors[colorScheme].icon}
+        style={styles.filterIcon}
       />
     </View>
   );
@@ -65,4 +35,36 @@ const SearchBar: React.FC = () => {
 
 export default SearchBar;
 
-const styles = StyleSheet.create({});
+const createInputStyles = (colorScheme: "light" | "dark") =>
+  ScaledSheet.create({
+    root: {
+      width: "100%",
+      height: 50,
+      flexDirection: "row",
+      alignItems: "center",
+      marginTop: 20,
+      backgroundColor: Colors[colorScheme].box,
+      borderRadius: 25,
+      paddingHorizontal: 10,
+    },
+    searchIcon: {
+      marginLeft: 5,
+      marginTop: Platform.OS === "ios" ? 0 : -4,
+    },
+    input: {
+      flex: 1,
+      height: "100%",
+      paddingLeft: 10,
+      paddingRight: 10,
+      color: Colors[colorScheme].text,
+    },
+    divider: {
+      width: 1,
+      height: 25,
+      backgroundColor: Colors[colorScheme].icon,
+      marginHorizontal: 10,
+    },
+    filterIcon: {
+      marginRight: 5,
+    },
+  });

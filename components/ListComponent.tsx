@@ -11,6 +11,7 @@ import TextSize from "@/constants/Size";
 import { ScaledSheet } from "react-native-size-matters";
 import { Colors } from "@/constants/Colors";
 import { RecipeList } from "@/app/types/listComponentTypes";
+import { router } from "expo-router";
 
 interface RecipeListProps {
   recipes: RecipeList; // Define recipes as a RecipeList type
@@ -19,6 +20,10 @@ interface RecipeListProps {
 const ListComponent: React.FC<RecipeListProps> = ({ recipes }) => {
   const colorScheme = useColorScheme() as "light" | "dark";
   const styles = useMemo(() => createHomeStyles(colorScheme), [colorScheme]);
+
+  const goToRecipe = (id: string) => {
+    router.push(`/screens/recipes/${id}`);
+  };
 
   return (
     <FlatList
@@ -29,18 +34,24 @@ const ListComponent: React.FC<RecipeListProps> = ({ recipes }) => {
       showsHorizontalScrollIndicator={false}
       ListFooterComponent={() => <View style={styles.footer} />}
       renderItem={({ item, index }) => (
-        <View style={(styles.listItem, index === 0 ? styles.leftPadding : {})}>
-          <Pressable style={styles.imageContainer}>
+        <Pressable
+          onPress={() => {
+            goToRecipe(item?.id.toString());
+            console.log("recipe");
+          }}
+          style={(styles.listItem, index === 0 ? styles.leftPadding : {})}
+        >
+          <View style={styles.imageContainer}>
             <Image
               source={{
                 uri: item?.image[0],
               }}
               style={styles.image}
             />
-          </Pressable>
+          </View>
           <Text style={styles.text}>{item?.name}</Text>
           <Text style={styles.desc}>By {item?.created_by}</Text>
-        </View>
+        </Pressable>
       )}
     />
   );
