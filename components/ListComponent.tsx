@@ -22,7 +22,7 @@ const ListComponent: React.FC<RecipeListProps> = ({ recipes }) => {
   const styles = useMemo(() => createHomeStyles(colorScheme), [colorScheme]);
 
   const goToRecipe = (id: string) => {
-    router.push(`/screens/recipes/${id}`);
+    router.push(`/recipes/${id}`);
   };
 
   return (
