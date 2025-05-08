@@ -28,7 +28,6 @@ export default function HomeScreen() {
     router.push("/(tabs)/Search");
   };
 
-
   return (
     <ScrollView style={styles.main}>
       <View style={styles.head}>
@@ -81,7 +80,7 @@ export default function HomeScreen() {
         <Text style={styles.seeAll}>See all</Text>
       </View>
       <View style={styles.listItem}>
-        <ListComponent  recipes={topRecommendation} />
+        <ListComponent recipes={topRecommendation} />
       </View>
 
       <View style={styles.listItemContainer}>

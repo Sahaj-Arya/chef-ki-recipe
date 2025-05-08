@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "../chef-ki-recipe"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}
