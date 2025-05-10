@@ -27,6 +27,9 @@ export interface Recipe {
   description: string;
   image: string[];
   comments: Comment[];
+  strMeal: string;
+  strMealThumb: string;
+  idMeal: string;
 }
 
 // Define RecipeList as an array of Recipe objects

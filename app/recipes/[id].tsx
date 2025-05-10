@@ -9,30 +9,28 @@ import {
 import React, { useLayoutEffect, useMemo, useState } from "react";
 import { router, useGlobalSearchParams } from "expo-router";
 import { ScaledSheet } from "react-native-size-matters";
-import Recipes from "../../assets/data/recipes.json";
 import { AntDesign, Fontisto } from "@expo/vector-icons";
-import ImageCarousel from "@/components/ImageCarousel";
 
-const getRecipe = (id: string) => {
-  const recipe = Recipes.find((item) => {
-    return item.id === Number(id);
-  });
-  return recipe || null;
+import axios from "axios";
+
+const getRecipe = async (id: string) => {
+  const result = await axios.get(
+    `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
+  );
+  return result.data;
 };
 
 const RecipeScreen: React.FC = () => {
   const { id } = useGlobalSearchParams<{ id: string }>();
   const colorScheme = useColorScheme() as "light" | "dark";
-
   const [myRecipe, setMyRecipe] = useState<any>(null);
-
   const styles = useMemo(() => createRecipeStyles(colorScheme), [colorScheme]);
 
   useLayoutEffect(() => {
-    if (id) {
-      const fetchedRecipe = getRecipe(id);
-      setMyRecipe(fetchedRecipe);
-    }
+    (async () => {
+      const recipe = await getRecipe(id);
+      setMyRecipe(recipe?.meals[0]);
+    })();
   }, [id]);
 
   if (!myRecipe) {
@@ -56,8 +54,8 @@ const RecipeScreen: React.FC = () => {
           <Fontisto name="bookmark" size={24} color="black" />
         </Pressable>
       </View>
-      <ImageCarousel image={myRecipe.image} />
-      {/* <Image source={{ uri: myRecipe.image[0] }} style={styles.image} /> */}
+      {/* <ImageCarousel image={myRecipe.image} /> */}
+      <Image source={{ uri: myRecipe.strMealThumb }} style={styles.image} />
       <Text style={styles.title}>{myRecipe.name}</Text>
       <Text>RecipeScreen ID: {id}</Text>
       <Text>Description: {myRecipe.description}</Text>
@@ -96,5 +94,9 @@ const createRecipeStyles = (colorScheme: "light" | "dark") =>
       alignItems: "center",
       aspectRatio: 1,
       width: 40,
+    },
+    image: {
+      width: "100%",
+      height: 600,
     },
   });
