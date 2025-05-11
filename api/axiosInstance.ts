@@ -33,7 +33,7 @@ axiosInstance.interceptors.request.use(
 
 // Token provider
 const getToken = async (): Promise<string | null> => {
-  return null; // Replace with actual logic
+  return null;
 };
 
 // Generic API call

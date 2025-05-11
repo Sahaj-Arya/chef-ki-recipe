@@ -15,7 +15,7 @@ const createHomeStyles = (colorScheme: "light" | "dark") =>
       overflow: "hidden",
       paddingTop: "10@s",
     },
-    image: { resizeMode: "cover", width: "50@s", height: "50@s" },
+    image: { contentFit: "cover", width: "50@s", height: "50@s" },
     salutation: {
       color: Colors[colorScheme].icon,
       fontSize: TextSize.small,
@@ -70,7 +70,7 @@ const createHomeStyles = (colorScheme: "light" | "dark") =>
       padding: "5@s",
     },
     categoryItemText: { fontSize: TextSize.extraSmall, fontWeight: "600" },
-    categoryItemImage: { height: "50@s", width: "50@s", resizeMode: "contain" },
+    categoryItemImage: { height: "50@s", width: "50@s", contentFit: "contain" },
     listItemContainer: {
       flexDirection: "row",
       justifyContent: "space-between",

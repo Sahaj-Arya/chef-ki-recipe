@@ -24,7 +24,7 @@ export default function HomeScreen() {
           </View>
           <Pressable onPress={goToProfile} style={styles.profile}>
             <Image
-              source={{ uri: profile?.profile_image }}
+              source={{ uri: profile?.profile_image + "/small" }}
               style={styles.image}
             />
           </Pressable>

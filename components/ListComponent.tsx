@@ -8,7 +8,7 @@ import { router } from "expo-router";
 import { Image } from "expo-image";
 
 interface RecipeListProps {
-  recipes: RecipeList; // Define recipes as a RecipeList type
+  recipes: RecipeList;
 }
 
 const ListComponent: React.FC<RecipeListProps> = ({ recipes }) => {
@@ -67,7 +67,7 @@ const createHomeStyles = (colorScheme: "light" | "dark") =>
     image: {
       height: "250@s",
       width: "180@s",
-      resizeMode: "cover",
+      contentFit: "cover",
     },
     text: {
       fontSize: TextSize.medium,
